@@ -1,0 +1,131 @@
+﻿:root {
+  color-scheme: dark;
+  --page: #0c1220;
+  --panel: #131d2e;
+  --border: #26354a;
+  --text: #e7edf6;
+  --muted: #91a1b7;
+  --accent: #54d6c7;
+}
+body { background: var(--page); color: var(--text); min-height: 100vh; }
+.navbar { background: #101827; }
+.brand-muted { color: var(--muted); font-weight: 400; }
+.eyebrow { color: var(--accent); font-size: .72rem; letter-spacing: .15em; font-weight: 700; }
+.metric-card, .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; }
+.metric-card { padding: 1.25rem; min-height: 145px; }
+.metric-label, .detail-label { color: var(--muted); font-size: .72rem; font-weight: 700; letter-spacing: .08em; }
+.metric-value { font-size: 1.8rem; font-weight: 650; margin: .65rem 0 .2rem; overflow-wrap: anywhere; }
+.metric-ip { font-size: 1.4rem; }
+.metric-note { color: var(--muted); font-size: .82rem; overflow-wrap: anywhere; }
+.panel { overflow: hidden; }
+.panel-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.25rem; border-bottom: 1px solid var(--border); }
+.live-indicator { color: var(--accent); font-size: .68rem; letter-spacing: .08em; font-weight: 700; }
+.table { --bs-table-bg: transparent; --bs-table-color: var(--text); --bs-table-border-color: var(--border); }
+.table thead th { color: var(--muted); font-size: .72rem; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; padding: 1rem; }
+.table tbody td { padding: .85rem 1rem; font-size: .88rem; }
+.state-pill { display: inline-flex; align-items: center; gap: .45rem; border-radius: 999px; padding: .35rem .65rem; font-size: .75rem; font-weight: 700; white-space: nowrap; }
+.state-online { background: #123b35; color: #73e4c8; }
+.state-offline { background: #48232d; color: #ff9ca9; }
+.state-unknown { background: #343747; color: #d4d8e2; }
+.state-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.details-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; padding: 1.25rem; }
+.detail-value { margin-top: .45rem; }
+.break-word { overflow-wrap: anywhere; }
+.logs-toolbar { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); }
+.logs-toolbar .form-control { background: #0c1220; color: var(--text); border-color: var(--border); }
+.logs-toolbar .form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 .2rem #54d6c722; }
+.logs-footer { padding: .9rem 1.25rem; }
+.status-code { font-family: ui-monospace, Consolas, monospace; font-weight: 700; }
+.log-destination { overflow-wrap: anywhere; min-width: 180px; }
+@media (max-width: 767px) {
+  main.container-fluid { padding-left: 1rem !important; padding-right: 1rem !important; }
+  .details-grid { grid-template-columns: 1fr; }
+  .metric-value { font-size: 1.55rem; }
+}
+
+/* Estatísticas históricas - LDA 3proxy Monitor */
+.stats-list {
+  padding: .5rem 1.25rem 1rem;
+}
+
+.rank-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: .8rem;
+}
+
+.rank-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: .83rem;
+}
+
+.rank-count {
+  color: var(--muted);
+  font-size: .78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.rank-track {
+  width: 100%;
+  height: 5px;
+  margin-top: .3rem;
+  background: #26354a;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.rank-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 99px;
+}
+
+.hourly-chart {
+  min-height: 210px;
+  display: flex;
+  align-items: stretch;
+  gap: 5px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.hour-bar-wrap {
+  flex: 1 0 32px;
+  min-width: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.hour-count {
+  font-size: .65rem;
+  color: var(--muted);
+}
+
+.hour-track {
+  height: 135px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  background: #0c1220;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.hour-fill {
+  width: 100%;
+  background: var(--accent);
+  border-radius: 4px 4px 0 0;
+}
+
+.hour-label {
+  color: var(--muted);
+  font-size: .65rem;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}

@@ -1,0 +1,148 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>3proxy Monitor | LDA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-dark border-bottom border-secondary-subtle">
+  <div class="container-fluid px-4">
+    <span class="navbar-brand fw-semibold">LDA <span class="brand-muted">/ 3proxy Monitor</span></span>
+    <span class="small text-secondary">MONITORAMENTO LOCAL</span>
+  </div>
+</nav>
+
+<main class="container-fluid px-4 py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+      <p class="eyebrow mb-1">INFRAESTRUTURA DE REDE</p>
+      <h1 class="h3 mb-1">Visão geral</h1>
+      <p class="text-secondary mb-0">Estado do proxy e disponibilidade das portas.</p>
+    </div>
+    <div class="text-md-end">
+      <div class="small text-secondary">Última verificação</div>
+      <div id="last-check">Aguardando dados...</div>
+    </div>
+  </div>
+
+  <div id="alert-area" class="alert alert-warning d-none" role="alert"></div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-xl-3"><section class="metric-card">
+      <div class="metric-label">PROCESSO 3PROXY</div><div id="process-status" class="metric-value">Verificando...</div>
+      <div id="process-detail" class="metric-note">Consultando Windows</div>
+    </section></div>
+    <div class="col-12 col-md-6 col-xl-3"><section class="metric-card">
+      <div class="metric-label">PORTAS DISPONÍVEIS</div><div id="ports-count" class="metric-value">— / 6</div>
+      <div class="metric-note">Teste de conexão TCP</div>
+    </section></div>
+    <div class="col-12 col-md-6 col-xl-3"><section class="metric-card">
+      <div class="metric-label">ENDEREÇO MONITORADO</div><div class="metric-value metric-ip">192.168.6.253</div>
+      <div class="metric-note">Servidor do 3proxy</div>
+    </section></div>
+    <div class="col-12 col-md-6 col-xl-3"><section class="metric-card">
+      <div class="metric-label">ARQUIVO DE LOG</div><div id="log-status" class="metric-value">Verificando...</div>
+      <div id="log-detail" class="metric-note">Procurando arquivo mais recente</div>
+    </section></div>
+  </div>
+
+  <section class="panel mb-4">
+    <div class="panel-heading">
+      <div><h2 class="h5 mb-1">Serviços monitorados</h2>
+        <p class="text-secondary small mb-0">Porta aberta não garante que uma solicitação seja concluída com sucesso.</p></div>
+      <span class="live-indicator">ATUALIZAÇÃO AUTOMÁTICA</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle mb-0">
+        <thead><tr><th>Serviço</th><th>Porta</th><th>Estado</th><th>Endereço</th></tr></thead>
+        <tbody id="services-table"><tr><td colspan="4">Carregando...</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="stats-section" class="mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+      <div>
+        <h2 class="h5 mb-1">Estatísticas históricas</h2>
+        <p id="stats-period" class="text-secondary small mb-0">Carregando estatísticas...</p>
+      </div>
+      <span id="stats-updated" class="text-secondary small"></span>
+    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-md-6 col-xl-3"><section class="metric-card">
+        <div class="metric-label">REGISTROS ANALISADOS</div><div id="stat-records" class="metric-value">—</div>
+      </section></div>
+      <div class="col-12 col-md-6 col-xl-3"><section class="metric-card">
+        <div class="metric-label">BYTES ENVIADOS</div><div id="stat-sent" class="metric-value">—</div>
+      </section></div>
+      <div class="col-12 col-md-6 col-xl-3"><section class="metric-card">
+        <div class="metric-label">BYTES RECEBIDOS</div><div id="stat-received" class="metric-value">—</div>
+      </section></div>
+      <div class="col-12 col-md-6 col-xl-3"><section class="metric-card">
+        <div class="metric-label">CÓDIGOS DE STATUS</div><div id="stat-status-count" class="metric-value">—</div>
+      </section></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-12 col-xl-6"><section class="panel h-100">
+        <div class="panel-heading"><h3 class="h6 mb-0">Status registrados</h3></div>
+        <div id="stats-status-list" class="stats-list"></div>
+      </section></div>
+      <div class="col-12 col-xl-6"><section class="panel h-100">
+        <div class="panel-heading"><h3 class="h6 mb-0">Atividade por hora</h3></div>
+        <div id="stats-hourly" class="hourly-chart"></div>
+      </section></div>
+      <div class="col-12 col-xl-6"><section class="panel h-100">
+        <div class="panel-heading"><h3 class="h6 mb-0">Principais clientes</h3></div>
+        <div id="stats-clients" class="stats-list"></div>
+      </section></div>
+      <div class="col-12 col-xl-6"><section class="panel h-100">
+        <div class="panel-heading"><h3 class="h6 mb-0">Destinos mais frequentes</h3></div>
+        <div id="stats-destinations" class="stats-list"></div>
+      </section></div>
+    </div>
+    <p class="text-secondary small mt-2">Os códigos de status são exibidos como registrados, sem classificação automática de sucesso ou falha.</p>
+  </section>
+  <section class="panel mb-4">
+    <div class="panel-heading">
+      <div><h2 class="h5 mb-1">Registros de conexão</h2>
+        <p id="logs-info" class="text-secondary small mb-0">Carregando logs...</p></div>
+      <button id="logs-refresh" class="btn btn-outline-info btn-sm" type="button">Atualizar logs</button>
+    </div>
+    <form id="logs-search" class="logs-toolbar">
+      <label for="log-query" class="form-label small text-secondary mb-1">Filtrar registros</label>
+      <div class="d-flex gap-2">
+        <input id="log-query" class="form-control form-control-sm" maxlength="120"
+          placeholder="IP, destino, serviço, status..." autocomplete="off">
+        <button class="btn btn-info btn-sm" type="submit">Filtrar</button>
+        <button id="logs-clear" class="btn btn-outline-secondary btn-sm" type="button">Limpar</button>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle mb-0 logs-table">
+        <thead><tr><th>Data / hora</th><th>Serviço</th><th>Cliente</th><th>Destino</th><th>Status</th><th>Enviado</th><th>Recebido</th></tr></thead>
+        <tbody id="logs-table"><tr><td colspan="7" class="text-secondary py-4">Carregando registros...</td></tr></tbody>
+      </table>
+    </div>
+    <div class="logs-footer text-secondary small">Exibindo no máximo 100 registros por consulta.</div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading"><div><h2 class="h5 mb-1">Detalhes do processo</h2>
+      <p class="text-secondary small mb-0">Informações obtidas do Windows.</p></div></div>
+    <div class="details-grid">
+      <div><div class="detail-label">PID</div><div id="pid" class="detail-value">—</div></div>
+      <div><div class="detail-label">EXECUTÁVEL</div><div id="executable" class="detail-value break-word">—</div></div>
+      <div><div class="detail-label">LOG MODIFICADO</div><div id="log-modified" class="detail-value">—</div></div>
+    </div>
+  </section>
+
+  <footer class="text-secondary small py-4">LDA — Monitoramento somente de leitura · <span id="refresh-state">Iniciando...</span></footer>
+</main>
+<script src="/assets/js/app.js"></script>
+</body>
+</html>
+
